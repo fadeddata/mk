@@ -9,7 +9,7 @@ case class TokenPiles(
   dungeons: Deck[DungeonToken] = TokenPiles.dungeons.shuffle,
   cities: Deck[CityToken] = TokenPiles.cities.shuffle,
   draconum: Deck[DraconumToken] = TokenPiles.draconum.shuffle,
-  ruins: Deck[RuinsToken]
+  ruins: Deck[RuinsToken] = TokenPiles.ruins.shuffle
 )
 
 object TokenPiles {
@@ -89,5 +89,20 @@ object TokenPiles {
     IceDragon,
     SwampDragon,
     SwampDragon
+  )
+
+  val ruins: Deck[RuinsToken] = Deck(
+    BlueMana,
+    OrcMana,
+    DraconumMana,
+    CityMana,
+    DungeonMageTower,
+    DungeonDraconum,
+    OrcDungeon,
+    OrcOrc,
+    OrcDraconum,
+    KeepDungeon,
+    KeepMageTower,
+    KeepCity
   )
 }
