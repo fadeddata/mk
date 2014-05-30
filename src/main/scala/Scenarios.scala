@@ -1,19 +1,9 @@
 package mageknight.scenarios
 
-import mageknight.gamestate._
-import mageknight._, tokens._, cards._, tiles._, skills._
+import mageknight._, tokens._, cards._, tiles._, skills._, gamestate._, heroes._
+import GameState._
 
 sealed trait Scenario {
-  val emptyPiles = TokenPiles(
-    orcs = Deck.empty[OrcToken],
-    keeps = Deck.empty[KeepToken],
-    mageTowers = Deck.empty[MageTowerToken],
-    dungeons = Deck.empty[DungeonToken],
-    cities = Deck.empty[CityToken],
-    draconum = Deck.empty[DraconumToken],
-    ruins = Deck.empty[RuinsToken]
-    )
-
   val emptyDecks = Decks(
     advancedActions = Deck.empty[AdvancedAction],
     eliteUnits = Deck.empty[EliteUnit],
@@ -33,61 +23,58 @@ sealed trait Scenario {
   val emptyGameState = GameState(
     scenario = FirstReconnaissance,
     players = List.empty[PlayerState],
-    dayNight = DayNight(),
-    fame = Map.empty[PlayerState, Int],
-    reputation = Map.empty[PlayerState, Int],
-    dayTactics = List.empty[DayTactic],
-    nightTactics = List.empty[NightTactic],
-    roundOrder = List.empty[RoundOrder],
+    dayNight = Day,
+    fame = Map.empty[Hero, Int],
+    reputation = Map.empty[Hero, Int],
+    dayTactics = DayTactic.tactics,
+    nightTactics = NightTactic.tactics,
+    roundOrder = List.empty[Hero],
     map = GameMap(),
-    piles = emptyPiles,
+    piles = TokenPiles(),
     decks = emptyDecks,
     offers = emptyOffers
     )
 
-  def init(): GameState
+  def init( playerStates: List[PlayerState] ): GameState = {
+    (playersLens ~ fameLens ~ reputationLens ~ roundOrderLens).
+      set(emptyGameState)(
+        playerStates,
+        playerStates.map(_.hero -> 0).toMap[Hero, Int],
+        playerStates.map(_.hero -> 0).toMap[Hero, Int],
+        playerStates.map(_.hero)
+      )
+  }
 }
 
 case object FirstReconnaissance extends Scenario {
-  def init() = emptyGameState
 }
 
 case object FullConquest extends Scenario {
-  def init() = emptyGameState
 }
 
 case object BlitzConquest extends Scenario {
-  def init() = emptyGameState
 }
 
 case object FullCooperation extends Scenario {
-  def init() = emptyGameState
 }
 
 case object BlitzCooperation extends Scenario {
-  def init() = emptyGameState
 }
 
 case object SoloConquest extends Scenario {
-  def init() = emptyGameState
 }
 
 case object MinesLiberation extends Scenario {
-  def init() = emptyGameState
 }
 
 case object DruidNights extends Scenario {
-  def init() = emptyGameState
 }
 
 case object DungeonLords extends Scenario {
-  def init() = emptyGameState
 }
 
 case object ConquerAndHold extends Scenario {
-  def init() = emptyGameState
 }
 
 case object OneToReturn extends Scenario {
-  def init() = emptyGameState
 }
